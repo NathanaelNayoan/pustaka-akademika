@@ -1,0 +1,129 @@
+/* ==========================================================================
+   PustakaAkademika — Responsive Breakpoints (Tablet & Mobile)
+   ========================================================================== */
+
+/* Tablet (768px - 1024px) */
+@media (max-width: 1024px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .form-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .kta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rules-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .operating-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .main-content {
+    padding: 1.5rem;
+  }
+
+  .top-header {
+    padding: 1rem 1.5rem;
+  }
+}
+
+/* Mobile (< 768px) */
+@media (max-width: 767px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .btn-icon-close {
+    display: inline-block;
+  }
+
+  .main-wrapper {
+    margin-left: 0;
+  }
+
+  .btn-hamburger {
+    display: flex;
+  }
+
+  .top-header {
+    padding: 0.85rem 1rem;
+  }
+
+  .page-title {
+    font-size: 1.15rem;
+  }
+
+  .page-subtitle {
+    display: none;
+  }
+
+  #btnResetDemo span {
+    display: none;
+  }
+
+  .main-content {
+    padding: 1rem;
+  }
+
+  .kpi-grid,
+  .user-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid-4,
+  .form-grid-2,
+  .member-profile-header {
+    grid-template-columns: 1fr;
+  }
+
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box,
+  .search-box-wide {
+    max-width: 100%;
+    min-width: 100%;
+  }
+
+  .student-select-group {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .student-select-group select {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .books-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .toast-container {
+    left: 1rem;
+    right: 1rem;
+    max-width: none;
+  }
+}

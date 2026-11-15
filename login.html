@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PustakaAkademika - Portal Sign In & Sign Up Sistem Perpustakaan Akademik">
+  <title>PustakaAkademika — Portal Masuk &amp; Pendaftaran</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <style>
+    /* Styling Khusus Halaman Auth */
+    .auth-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1C2B24 0%, #234B3A 60%, #3F7259 100%);
+      padding: 2rem 1.5rem;
+      position: relative;
+    }
+
+    .auth-wrapper {
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: auto;
+    }
+
+    .auth-container {
+      width: 100%;
+      background-color: var(--color-surface);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .auth-header {
+      background-color: var(--color-primary);
+      padding: 2rem 1.75rem 1.5rem;
+      text-align: center;
+      color: var(--color-surface);
+      border-bottom: 2px solid var(--color-accent);
+    }
+
+    .auth-brand-icon {
+      width: 52px;
+      height: 52px;
+      background-color: rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-md);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.75rem;
+      color: var(--color-surface);
+    }
+
+    .auth-title {
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .auth-subtitle {
+      font-size: 0.88rem;
+      color: rgba(255, 255, 255, 0.85);
+      margin-top: 0.25rem;
+    }
+
+    /* Tabs Sign In vs Sign Up */
+    .auth-tabs {
+      display: flex;
+      background-color: var(--color-bg-soft);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .auth-tab-btn {
+      flex: 1;
+      padding: 0.95rem 1rem;
+      border: none;
+      background: transparent;
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      position: relative;
+    }
+
+    .auth-tab-btn:hover {
+      color: var(--color-primary);
+    }
+
+    .auth-tab-btn.active {
+      color: var(--color-primary);
+      background-color: var(--color-surface);
+    }
+
+    .auth-tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background-color: var(--color-primary);
+    }
+
+    .auth-body {
+      padding: 1.75rem;
+    }
+
+    /* Role Toggle di Form Sign In */
+    .role-segmented-control {
+      display: flex;
+      background-color: var(--color-bg-soft);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 0.25rem;
+      margin-bottom: 1.35rem;
+      gap: 0.25rem;
+    }
+
+    .role-seg-btn {
+      flex: 1;
+      padding: 0.55rem;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      transition: all var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+
+    .role-seg-btn.active {
+      background-color: var(--color-primary);
+      color: var(--color-surface);
+      box-shadow: 0 2px 6px rgba(35, 75, 58, 0.2);
+    }
+
+    .auth-alert {
+      padding: 0.75rem 0.9rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.84rem;
+      margin-bottom: 1.1rem;
+      display: none;
+    }
+
+    .auth-alert-error {
+      background-color: var(--color-danger-bg);
+      color: var(--color-danger);
+      border: 1px solid #F5C6CB;
+    }
+
+    .auth-alert-success {
+      background-color: var(--color-success-bg);
+      color: var(--color-success-text);
+      border: 1px solid #C3E6CB;
+    }
+
+    /* Demo Account Quick-Fill Box */
+    .demo-accounts-box {
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px dashed var(--color-border);
+      font-size: 0.82rem;
+      color: var(--color-text-muted);
+    }
+
+    .demo-accounts-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.65rem;
+    }
+
+    .demo-badge-wrap {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-quick-fill {
+      padding: 0.35rem 0.65rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-border);
+      background-color: var(--color-bg-soft);
+      color: var(--color-text-dark);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .btn-quick-fill:hover {
+      background-color: var(--color-primary);
+      color: var(--color-surface);
+      border-color: var(--color-primary);
+    }
+
+    .auth-footer-text {
+      text-align: center;
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.82);
+      margin-top: 1.25rem;
+      letter-spacing: 0.01em;
+    }
+  </style>
+</head>
+<body class="auth-page">
+  <div class="auth-wrapper">
+    <div class="auth-container">
+      <!-- Header Brand PustakaAkademika -->
+    <header class="auth-header">
+      <div class="auth-brand-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          <line x1="8" y1="7" x2="16" y2="7"></line>
+          <line x1="8" y1="11" x2="14" y2="11"></line>
+        </svg>
+      </div>
+      <h1 class="auth-title">PustakaAkademika</h1>
+      <p class="auth-subtitle">Sistem Manajemen Perpustakaan &amp; Layanan Akademik</p>
+    </header>
+
+    <!-- Navigation Tabs: Masuk vs Daftar Baru -->
+    <nav class="auth-tabs" role="tablist">
+      <button type="button" id="tabSignIn" class="auth-tab-btn active" role="tab" aria-selected="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+          <polyline points="10 17 15 12 10 7"></polyline>
+          <line x1="15" y1="12" x2="3" y2="12"></line>
+        </svg>
+        <span>Masuk (Sign In)</span>
+      </button>
+
+      <button type="button" id="tabSignUp" class="auth-tab-btn" role="tab" aria-selected="false">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="8.5" cy="7" r="4"></circle>
+          <line x1="20" y1="8" x2="20" y2="14"></line>
+          <line x1="23" y1="11" x2="17" y2="11"></line>
+        </svg>
+        <span>Daftar Pemustaka (Sign Up)</span>
+      </button>
+    </nav>
+
+    <div class="auth-body">
+      <div id="authAlert" class="auth-alert" role="alert"></div>
+
+      <!-- FORM 1: SIGN IN -->
+      <section id="sectionSignIn">
+        <!-- Toggle Peran: Mahasiswa vs Pustakawan -->
+        <div class="role-segmented-control" role="group" aria-label="Pilih Peran Masuk">
+          <button type="button" class="role-seg-btn active" data-auth-role="user">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Mahasiswa / Pemustaka</span>
+          </button>
+          <button type="button" class="role-seg-btn" data-auth-role="admin">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+              <path d="M2 17l10 5 10-5"></path>
+              <path d="M2 12l10 5 10-5"></path>
+            </svg>
+            <span>Pustakawan / Admin</span>
+          </button>
+        </div>
+
+        <form id="signInForm" novalidate>
+          <div class="form-group">
+            <label id="lblSignInId" for="signInId">NIM atau Email Terdaftar <span class="required">*</span></label>
+            <input type="text" id="signInId" class="form-control" placeholder="Contoh: MHS-2026001 atau alya@kampus.ac.id" required autofocus>
+            <span id="error-signInId" class="error-message"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="signInPassword">Kata Sandi (Password) <span class="required">*</span></label>
+            <input type="password" id="signInPassword" class="form-control" placeholder="Masukkan kata sandi Anda" required>
+            <span id="error-signInPassword" class="error-message"></span>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1.25rem;">
+            <span>Masuk ke Sistem</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </form>
+
+        <!-- Akun Cepat untuk Uji Coba Demo -->
+        <div class="demo-accounts-box">
+          <div class="demo-accounts-header">
+            <strong>Bantuan Uji Coba (Demo):</strong>
+            <span style="font-size: 0.76rem; color: var(--color-primary); font-weight: 600;">Klik untuk isi otomatis</span>
+          </div>
+          <div class="demo-badge-wrap">
+            <button type="button" class="btn-quick-fill" data-fill-role="admin">
+              Admin (admin / admin123)
+            </button>
+            <button type="button" class="btn-quick-fill" data-fill-role="user" data-id="MHS-2026001">
+              Alya Putri (MHS-2026001)
+            </button>
+            <button type="button" class="btn-quick-fill" data-fill-role="user" data-id="MHS-2026002">
+              Bagas (MHS-2026002)
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- FORM 2: SIGN UP PEMUSTAKA BARU -->
+      <section id="sectionSignUp" hidden>
+        <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 1.15rem; line-height: 1.45;">
+          Daftarkan akun pemustaka untuk mendapatkan KTA digital dan akses peminjaman buku perpustakaan.
+        </p>
+
+        <form id="signUpForm" novalidate>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="signUpId">NIM / ID Anggota <span class="required">*</span></label>
+              <input type="text" id="signUpId" class="form-control" placeholder="Contoh: MHS-2026005" required>
+              <span id="error-signUpId" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="signUpName">Nama Lengkap <span class="required">*</span></label>
+              <input type="text" id="signUpName" class="form-control" placeholder="Nama lengkap Anda" required>
+              <span id="error-signUpName" class="error-message"></span>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="signUpFaculty">Fakultas <span class="required">*</span></label>
+              <input type="text" id="signUpFaculty" class="form-control" placeholder="Contoh: Ilmu Komputer" required>
+              <span id="error-signUpFaculty" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="signUpDept">Program Studi (Prodi) <span class="required">*</span></label>
+              <input type="text" id="signUpDept" class="form-control" placeholder="Contoh: Teknik Informatika" required>
+              <span id="error-signUpDept" class="error-message"></span>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="signUpEmail">Email Akademik <span class="required">*</span></label>
+              <input type="email" id="signUpEmail" class="form-control" placeholder="nama@kampus.ac.id" required>
+              <span id="error-signUpEmail" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="signUpPhone">Nomor WhatsApp / HP <span class="required">*</span></label>
+              <input type="tel" id="signUpPhone" class="form-control" placeholder="0812xxxxxxxx" required>
+              <span id="error-signUpPhone" class="error-message"></span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="signUpPassword">Kata Sandi (Password) <span class="required">*</span></label>
+            <input type="password" id="signUpPassword" class="form-control" placeholder="Minimal 6 karakter" required>
+            <span id="error-signUpPassword" class="error-message"></span>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1.25rem;">
+            <span>Daftar Sekarang &amp; Masuk</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </form>
+      </section>
+      </div>
+    </div>
+
+    <!-- Posisi Footer Tepat di Bawah Box Login & Center -->
+    <p class="auth-footer-text">
+      &copy; 2026 PustakaAkademika &bull; Sistem Berbasis LocalStorage Mandiri
+    </p>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Scripts -->
+  <script src="./js/storage.js"></script>
+  <script src="./js/utils.js"></script>
+  <script src="./js/ui.js"></script>
+  <script src="./js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      PustakaStorage.init();
+
+      let activeAuthRole = 'user'; // 'user' atau 'admin'
+
+      // DOM Elements
+      const tabSignIn = document.getElementById('tabSignIn');
+      const tabSignUp = document.getElementById('tabSignUp');
+      const sectionSignIn = document.getElementById('sectionSignIn');
+      const sectionSignUp = document.getElementById('sectionSignUp');
+      const roleSegBtns = document.querySelectorAll('.role-seg-btn');
+      const lblSignInId = document.getElementById('lblSignInId');
+      const signInIdInput = document.getElementById('signInId');
+      const signInPasswordInput = document.getElementById('signInPassword');
+      const signInForm = document.getElementById('signInForm');
+      const signUpForm = document.getElementById('signUpForm');
+      const authAlert = document.getElementById('authAlert');
+      const quickFillBtns = document.querySelectorAll('.btn-quick-fill');
+
+      function showAlert(msg, type = 'error') {
+        authAlert.className = `auth-alert ${type === 'error' ? 'auth-alert-error' : 'auth-alert-success'}`;
+        authAlert.textContent = msg;
+        authAlert.style.display = 'block';
+      }
+
+      function hideAlert() {
+        authAlert.style.display = 'none';
+      }
+
+      // Switch Tab (Sign In vs Sign Up)
+      tabSignIn.addEventListener('click', () => {
+        tabSignIn.classList.add('active');
+        tabSignUp.classList.remove('active');
+        sectionSignIn.hidden = false;
+        sectionSignUp.hidden = true;
+        hideAlert();
+      });
+
+      tabSignUp.addEventListener('click', () => {
+        tabSignUp.classList.add('active');
+        tabSignIn.classList.remove('active');
+        sectionSignUp.hidden = false;
+        sectionSignIn.hidden = true;
+        hideAlert();
+      });
+
+      // Switch Role Masuk (User vs Admin)
+      roleSegBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          roleSegBtns.forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeAuthRole = btn.dataset.authRole;
+          hideAlert();
+
+          if (activeAuthRole === 'admin') {
+            lblSignInId.innerHTML = 'Username Pustakawan / Admin <span class="required">*</span>';
+            signInIdInput.placeholder = 'admin';
+            signInPasswordInput.placeholder = 'admin123';
+          } else {
+            lblSignInId.innerHTML = 'NIM atau Email Terdaftar <span class="required">*</span>';
+            signInIdInput.placeholder = 'Contoh: MHS-2026001 atau alya@kampus.ac.id';
+            signInPasswordInput.placeholder = 'Masukkan kata sandi akun Anda';
+          }
+        });
+      });
+
+      // Quick-fill demo button
+      quickFillBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          hideAlert();
+          const targetRole = btn.dataset.fillRole;
+          const roleBtn = document.querySelector(`.role-seg-btn[data-auth-role="${targetRole}"]`);
+          if (roleBtn) roleBtn.click();
+
+          if (targetRole === 'admin') {
+            signInIdInput.value = 'admin';
+            signInPasswordInput.value = 'admin123';
+          } else {
+            signInIdInput.value = btn.dataset.id || 'MHS-2026001';
+            signInPasswordInput.value = '123456';
+          }
+        });
+      });
+
+      // Handle Sign In Submit
+      signInForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        hideAlert();
+
+        const idVal = signInIdInput.value.trim();
+        const pwdVal = signInPasswordInput.value;
+
+        if (!idVal) {
+          showAlert(activeAuthRole === 'admin' ? 'Username Admin wajib diisi.' : 'NIM atau Email wajib diisi.');
+          signInIdInput.focus();
+          return;
+        }
+
+        if (activeAuthRole === 'admin') {
+          const res = PustakaAuth.loginAdmin(idVal, pwdVal);
+          if (res.success) {
+            showAlert('Login Berhasil! Mengalihkan ke Dashboard Pustakawan...', 'success');
+            setTimeout(() => {
+              window.location.href = './admin.html';
+            }, 500);
+          } else {
+            showAlert(res.message);
+          }
+        } else {
+          // Login Pemustaka
+          const res = PustakaAuth.loginUser(idVal, pwdVal);
+          if (res.success) {
+            showAlert(`Selamat datang, ${res.session.name}! Mengalihkan ke Portal Mahasiswa...`, 'success');
+            setTimeout(() => {
+              window.location.href = './index.html';
+            }, 500);
+          } else {
+            showAlert(res.message);
+          }
+        }
+      });
+
+      // Handle Sign Up Submit
+      signUpForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        hideAlert();
+
+        const id = document.getElementById('signUpId').value.trim();
+        const name = document.getElementById('signUpName').value.trim();
+        const faculty = document.getElementById('signUpFaculty').value.trim();
+        const department = document.getElementById('signUpDept').value.trim();
+        const email = document.getElementById('signUpEmail').value.trim();
+        const phone = document.getElementById('signUpPhone').value.trim();
+        const password = document.getElementById('signUpPassword').value;
+
+        if (!id || !name || !faculty || !department || !email || !phone || !password) {
+          showAlert('Semua kolom formulir pendaftaran wajib diisi.');
+          return;
+        }
+
+        if (password.length < 5) {
+          showAlert('Kata sandi minimal 5 karakter.');
+          return;
+        }
+
+        const res = PustakaAuth.registerUser({
+          id,
+          name,
+          faculty,
+          department,
+          email,
+          phone,
+          password
+        });
+
+        if (res.success) {
+          showAlert(`Pendaftaran Berhasil! Selamat bergabung, ${name}. Mengalihkan...`, 'success');
+          setTimeout(() => {
+            window.location.href = './index.html';
+          }, 700);
+        } else {
+          showAlert(res.message);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

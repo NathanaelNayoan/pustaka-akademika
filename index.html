@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PustakaAkademika - Portal Layanan Pemustaka dan Mahasiswa">
+  <title>PustakaAkademika — Portal Pemustaka</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body data-app-mode="user">
+  <div class="app-layout">
+    <!-- Overlay Sidebar Mobile -->
+    <div id="sidebarOverlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+    <!-- Sidebar Navigasi -->
+    <aside id="sidebar" class="sidebar" aria-label="Navigasi Portal Pemustaka">
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="brand-icon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              <line x1="8" y1="7" x2="16" y2="7"></line>
+              <line x1="8" y1="11" x2="14" y2="11"></line>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">PustakaAkademika</span>
+            <span class="brand-tagline">Portal Pemustaka</span>
+          </div>
+        </div>
+        <button id="closeSidebarBtn" class="btn-icon-close" type="button" aria-label="Tutup Menu">
+          &times;
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <!-- Menu Navigasi Mode Pemustaka / Mahasiswa -->
+        <button type="button" class="nav-item nav-item-user active" data-view="opac">
+          <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <span>Eksplorasi (OPAC)</span>
+        </button>
+
+        <button type="button" class="nav-item nav-item-user" data-view="my-loans">
+          <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+            <path d="M7 15h0M2 9.5h20"></path>
+          </svg>
+          <span>Peminjaman Saya</span>
+        </button>
+
+        <button type="button" class="nav-item nav-item-user" data-view="rules">
+          <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          <span>Tata Tertib</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p class="storage-badge">
+          <span class="dot-online"></span>
+          <span>LocalStorage Aktif</span>
+        </p>
+        <small id="sidebarRoleText">Mode: Pemustaka Mandiri</small>
+      </div>
+    </aside>
+
+    <!-- Area Konten Utama -->
+    <div class="main-wrapper">
+      <header class="top-header">
+        <div class="header-left">
+          <button id="mobileMenuBtn" class="btn-hamburger" type="button" aria-label="Buka Menu Navigasi">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <div>
+            <h1 id="pageTitle" class="page-title">Eksplorasi Katalog (OPAC)</h1>
+            <p id="pageSubtitle" class="page-subtitle">Pencarian koleksi perpustakaan, ketersediaan stok, dan peminjaman mandiri</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button id="btnUserLogout" class="btn btn-outline btn-sm" type="button" title="Keluar dari akun pemustaka">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            <span>Keluar (Logout)</span>
+          </button>
+
+          <button id="btnResetDemo" class="btn btn-outline btn-sm" type="button" title="Kembalikan data contoh awal">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+            </svg>
+            <span>Reset Demo</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <!-- TAMPILAN 1: EKSPLORASI BUKU (OPAC - MAHASISWA) -->
+        <section id="view-opac" class="view-section active" aria-label="Eksplorasi Katalog OPAC">
+          <!-- Toolbar Pencarian & Filter OPAC -->
+          <div class="toolbar">
+            <div class="filter-group">
+              <div class="search-box">
+                <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="search" id="opacSearchInput" class="form-control" placeholder="Cari judul buku, penulis, ISBN, atau kategori...">
+              </div>
+
+              <select id="opacCategoryFilter" class="form-control" aria-label="Filter Kategori OPAC">
+                <option value="ALL">Semua Kategori</option>
+                <option value="Teknologi">Teknologi</option>
+                <option value="Sains">Sains</option>
+                <option value="Sastra">Sastra</option>
+                <option value="Ekonomi">Ekonomi</option>
+                <option value="Sejarah">Sejarah</option>
+              </select>
+
+              <select id="opacAvailabilityFilter" class="form-control" aria-label="Filter Ketersediaan OPAC">
+                <option value="ALL">Semua Koleksi</option>
+                <option value="AVAILABLE">Tersedia Saja</option>
+                <option value="EMPTY">Sedang Dipinjam (Habis)</option>
+              </select>
+            </div>
+
+            <div class="toolbar-actions">
+              <span class="info-pill">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span>Pinjam Mandiri 24/7</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Card Koleksi Buku OPAC -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Katalog Koleksi Publik (OPAC)</h2>
+                <p class="card-subtitle">Pilih buku yang tersedia untuk mengajukan peminjaman mandiri secara online</p>
+              </div>
+              <span id="opacCountInfo" class="count-badge">0 buku tersedia</span>
+            </div>
+            <div class="card-body">
+              <div id="opacBooksGrid" class="books-grid"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAMPILAN 2: PEMINJAMAN SAYA & KTA DIGITAL (MAHASISWA) -->
+        <section id="view-my-loans" class="view-section" aria-label="Peminjaman Saya dan KTA Digital">
+          <!-- Toolbar Status Portal Pemustaka (Mode 1 User Terkunci) -->
+          <div class="toolbar">
+            <div class="filter-group">
+              <span class="info-pill">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span>Akun Aktif: <strong id="studentAccountLabel" style="color: var(--color-primary); margin-left: 0.25rem;">-</strong></span>
+              </span>
+            </div>
+            <div class="toolbar-actions">
+              <button id="btnSwitchStudentAuth" type="button" class="btn btn-outline btn-sm" title="Ganti akun / Masuk dengan NIM lain">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                  <polyline points="10 17 15 12 10 7"></polyline>
+                  <line x1="15" y1="12" x2="3" y2="12"></line>
+                </svg>
+                <span>Ganti Akun (NIM)</span>
+              </button>
+              <span class="info-pill">
+                <span class="dot-online"></span>
+                <span>Portal Pemustaka Aktif</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- KTA Digital & Ringkasan Pinjaman Grid -->
+          <div class="kta-grid">
+            <!-- Kartu Tanda Anggota (KTA) Digital -->
+            <div class="kta-card">
+              <div class="kta-header">
+                <div>
+                  <div class="kta-brand-title">PUSTAKA AKADEMIKA</div>
+                  <div class="kta-brand-subtitle">KARTU TANDA ANGGOTA DIGITAL</div>
+                </div>
+                <div class="kta-chip">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="3" y="5" width="18" height="14" rx="3" fill-opacity="0.3"></rect>
+                    <rect x="7" y="9" width="10" height="6" rx="1.5" fill="#fff"></rect>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="kta-body">
+                <div class="kta-avatar-wrap">
+                  <div id="ktaAvatar" class="kta-avatar" aria-hidden="true">AP</div>
+                </div>
+                <div class="kta-details">
+                  <span class="kta-label">Nama Anggota</span>
+                  <strong id="ktaName" class="kta-name">Alya Putri Rahmawati</strong>
+
+                  <span class="kta-label">Nomor Induk Mahasiswa (NIM)</span>
+                  <div id="ktaId" class="kta-id">MHS-2026001</div>
+
+                  <span class="kta-label">Program Studi / Fakultas</span>
+                  <div id="ktaDept" class="kta-dept">Teknik Informatika</div>
+                </div>
+              </div>
+
+              <div class="kta-footer">
+                <div class="kta-meta-col">
+                  <span class="kta-meta-label">Status Keanggotaan</span>
+                  <span class="kta-meta-value text-success font-bold">&bull; AKTIF</span>
+                </div>
+                <div class="kta-meta-col text-right">
+                  <span class="kta-meta-label">Kuota Pinjaman Aktif</span>
+                  <span id="ktaQuotaBadge" class="kta-quota-badge">0 / 3 Buku</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ringkasan Statistik Status Mahasiswa -->
+            <div class="user-summary-grid">
+              <div class="summary-metric-card">
+                <div class="metric-icon-wrap metric-icon-primary">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <span class="metric-label">Buku Sedang Dipinjam</span>
+                  <strong id="userTotalActiveCount" class="metric-number">0</strong>
+                  <p class="metric-desc">Maksimal batas kuota 3 buku</p>
+                </div>
+              </div>
+
+              <div class="summary-metric-card">
+                <div class="metric-icon-wrap metric-icon-accent">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                  </svg>
+                </div>
+                <div>
+                  <span class="metric-label">Total Tagihan Denda</span>
+                  <strong id="userTotalFineAmount" class="metric-number text-danger">Rp 0</strong>
+                  <p class="metric-desc">Denda keterlambatan Rp 2.000 / hari</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Daftar Pinjaman Aktif & Countdown Waktu Jatuh Tempo -->
+          <div class="card card-mb">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Daftar Pinjaman Aktif &amp; Status Jatuh Tempo</h2>
+                <p class="card-subtitle">Perpanjang mandiri tersedia sebelum tanggal jatuh tempo (maksimal 1x perpanjangan)</p>
+              </div>
+              <span id="userActiveCountBadge" class="count-badge">0 buku aktif</span>
+            </div>
+            <div class="card-body">
+              <div id="studentActiveLoansList" class="student-loans-list"></div>
+            </div>
+          </div>
+
+          <!-- Riwayat Pengembalian Buku -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Riwayat Buku yang Telah Dikembalikan</h2>
+                <p class="card-subtitle">Catatan historis literatur yang pernah Anda baca dan pinjam</p>
+              </div>
+              <span id="userHistoryCountBadge" class="count-badge">0 riwayat</span>
+            </div>
+            <div class="card-body">
+              <div id="studentHistoryLoansList" class="student-loans-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAMPILAN 3: PANDUAN & TATA TERTIB (MAHASISWA) -->
+        <section id="view-rules" class="view-section" aria-label="Panduan dan Tata Tertib Perpustakaan">
+          <div class="card card-mb">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Ketentuan &amp; Tata Tertib Perpustakaan Akademik</h2>
+                <p class="card-subtitle">Pedoman hak pemustaka, kuota peminjaman, serta sanksi keterlambatan buku</p>
+              </div>
+              <span class="count-badge">Regulasi Resmi</span>
+            </div>
+            <div class="card-body">
+              <div class="rules-grid">
+                <article class="rule-card">
+                  <div class="rule-number">1</div>
+                  <div class="rule-content">
+                    <h3>Hak &amp; Batas Kuota Peminjaman</h3>
+                    <p>Setiap mahasiswa terdaftar berhak meminjam maksimal <strong>3 (tiga) eksemplar buku</strong> secara bersamaan.</p>
+                  </div>
+                </article>
+
+                <article class="rule-card">
+                  <div class="rule-number">2</div>
+                  <div class="rule-content">
+                    <h3>Durasi &amp; Masa Peminjaman</h3>
+                    <p>Masa peminjaman standar adalah <strong>7 (tujuh) hari kalender</strong> terhitung sejak tanggal buku dipinjam.</p>
+                  </div>
+                </article>
+
+                <article class="rule-card">
+                  <div class="rule-number">3</div>
+                  <div class="rule-content">
+                    <h3>Perpanjangan Masa Pinjam Mandiri</h3>
+                    <p>Perpanjangan masa pinjam dapat dilakukan mandiri sebanyak <strong>1 (satu) kali (+7 hari)</strong> selama buku belum melewati tanggal jatuh tempo.</p>
+                  </div>
+                </article>
+
+                <article class="rule-card">
+                  <div class="rule-number">4</div>
+                  <div class="rule-content">
+                    <h3>Kebijakan Denda Keterlambatan</h3>
+                    <p>Keterlambatan pengembalian buku dikenakan denda sebesar <strong>Rp 2.000 per hari per buku</strong>. Anggota yang memiliki denda tertunggak tidak dapat meminjam buku baru.</p>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+
+          <!-- Jadwal Operasional & Pusat Bantuan Pemustaka -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Jadwal Operasional &amp; Pusat Bantuan Pemustaka</h2>
+                <p class="card-subtitle">Waktu pelayanan luring dan saluran komunikasi resmi perpustakaan akademik</p>
+              </div>
+              <span class="count-badge">Informasi Layanan</span>
+            </div>
+            <div class="card-body">
+              <div class="operating-grid">
+                <div class="operating-card">
+                  <div class="operating-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4>Jam Pelayanan Sirkulasi</h4>
+                    <p>Senin – Jumat: 08.00 – 16.30 WIB<br>Sabtu: 08.30 – 13.00 WIB<br>Minggu &amp; Libur Nasional: Tutup</p>
+                  </div>
+                </div>
+
+                <div class="operating-card">
+                  <div class="operating-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                      <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4>Helpdesk &amp; Layanan Pemustaka</h4>
+                    <p>Email: perpustakaan@kampus.ac.id<br>WhatsApp: 0812-3456-7890<br>Gedung Perpustakaan Pusat Lt. 1</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- MODAL KONFIRMASI GLOBAL -->
+  <div id="confirmModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="confirmModalTitle" hidden>
+    <div class="modal-dialog modal-sm">
+      <div class="modal-header">
+        <h3 id="confirmModalTitle" class="modal-title">Konfirmasi Tindakan</h3>
+        <button id="btnCloseConfirmModal" type="button" class="modal-close" aria-label="Tutup">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="confirmModalMessage" class="confirm-message">Apakah Anda yakin ingin melanjutkan tindakan ini?</p>
+      </div>
+      <div class="modal-footer">
+        <button id="btnCancelConfirmModal" type="button" class="btn btn-outline">Batal</button>
+        <button id="btnConfirmAction" type="button" class="btn btn-danger">Ya, Lanjutkan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL PEMINJAMAN MANDIRI MAHASISWA -->
+  <div id="userBorrowModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="userBorrowModalTitle" hidden>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="userBorrowModalTitle" class="modal-title">Konfirmasi Peminjaman Mandiri</h3>
+        <button id="btnCloseUserBorrowModal" type="button" class="modal-close" aria-label="Tutup">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="card card-mb" style="background-color: var(--color-bg-soft); border-color: var(--color-border); padding: 1rem;">
+          <h4 id="userBorrowBookTitle" style="color: var(--color-primary); font-size: 1.05rem; margin-bottom: 0.35rem;">Judul Buku</h4>
+          <p class="cell-sub">
+            Penulis: <span id="userBorrowBookAuthor">-</span> &bull; ISBN: <span id="userBorrowBookIsbn">-</span>
+          </p>
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+          <p style="font-size: 0.9rem; margin-bottom: 0.35rem;">
+            <strong>Nama Peminjam:</strong> <span id="userBorrowStudentName">-</span>
+          </p>
+          <p style="font-size: 0.9rem;">
+            <strong>Tanggal Jatuh Tempo:</strong> <span id="userBorrowDueDate" style="color: var(--color-primary); font-weight: 700;">-</span>
+          </p>
+        </div>
+
+        <div id="userBorrowNotice" class="api-status"></div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnCancelUserBorrow" type="button" class="btn btn-outline">Batal</button>
+        <button id="btnConfirmUserBorrow" type="button" class="btn btn-primary">Konfirmasi Pinjam</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL MASUK / GANTI AKUN PEMUSTAKA (OPSI B) -->
+  <div id="studentLoginModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="studentLoginModalTitle" hidden>
+    <div class="modal-dialog modal-sm">
+      <div class="modal-header">
+        <h3 id="studentLoginModalTitle" class="modal-title">Identifikasi Pemustaka</h3>
+        <button id="btnCloseStudentLoginModal" type="button" class="modal-close" aria-label="Tutup">&times;</button>
+      </div>
+      <form id="studentLoginForm" novalidate>
+        <div class="modal-body">
+          <p style="font-size: 0.88rem; color: var(--color-text-muted); margin-bottom: 1rem; line-height: 1.5;">
+            Masukkan <strong>Nomor Induk Mahasiswa (NIM / ID Anggota)</strong> Anda untuk mengakses KTA digital dan riwayat peminjaman mandiri.
+          </p>
+          <div class="form-group">
+            <label for="studentLoginIdInput">NIM / Nomor Anggota <span class="required">*</span></label>
+            <input type="text" id="studentLoginIdInput" class="form-control" placeholder="Contoh: MHS-2026001" required autofocus autocomplete="off">
+            <span id="error-studentLoginId" class="error-message"></span>
+          </div>
+          <div class="api-status" style="margin-top: 0.75rem; font-size: 0.8rem; background-color: var(--color-bg-soft); border: 1px solid var(--color-border); padding: 0.6rem; border-radius: var(--radius-sm); color: var(--color-text-muted);">
+            <em>Contoh NIM demo terdaftar:</em><br>
+            &bull; MHS-2026001 (Alya)<br>
+            &bull; MHS-2026002 (Bagas)<br>
+            &bull; MHS-2026003 (Citra)<br>
+            &bull; MHS-2026004 (Dimas)
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="btnCancelStudentLogin" type="button" class="btn btn-outline">Batal</button>
+          <button type="submit" class="btn btn-primary">Masuk Akun</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Modul Arsitektur Sistem Pemustaka -->
+  <script src="./js/storage.js" defer></script>
+  <script src="./js/api.js" defer></script>
+  <script src="./js/utils.js" defer></script>
+  <script src="./js/ui.js" defer></script>
+  <script src="./js/auth.js" defer></script>
+  <script src="./js/user-portal.js" defer></script>
+  <script src="./js/user-app.js" defer></script>
+</body>
+</html>

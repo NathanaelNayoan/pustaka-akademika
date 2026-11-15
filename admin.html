@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PustakaAkademika - Sistem Manajemen Perpustakaan Berbasis Web untuk Sekolah dan Universitas">
+  <title>PustakaAkademika — Sistem Manajemen Perpustakaan</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body data-app-mode="admin">
+  <div class="app-layout">
+    <!-- Overlay Sidebar Mobile -->
+    <div id="sidebarOverlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+    <!-- Sidebar Navigasi -->
+    <aside id="sidebar" class="sidebar" aria-label="Navigasi Utama">
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="brand-icon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              <line x1="8" y1="7" x2="16" y2="7"></line>
+              <line x1="8" y1="11" x2="14" y2="11"></line>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">PustakaAkademika</span>
+            <span class="brand-tagline">Sistem Perpustakaan</span>
+          </div>
+        </div>
+        <button id="closeSidebarBtn" class="btn-icon-close" type="button" aria-label="Tutup Menu">
+          &times;
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <!-- Menu Navigasi Mode Pustakawan / Admin -->
+        <button type="button" class="nav-item nav-item-admin active" data-view="dashboard">
+          <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="9"></rect>
+            <rect x="14" y="3" width="7" height="5"></rect>
+            <rect x="14" y="12" width="7" height="9"></rect>
+            <rect x="3" y="16" width="7" height="5"></rect>
+          </svg>
+          <span>Dashboard</span>
+        </button>
+
+        <button type="button" class="nav-item nav-item-admin" data-view="books">
+          <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+          </svg>
+          <span>Katalog Buku</span>
+        </button>
+
+        <button type="button" class="nav-item nav-item-admin" data-view="members">
+          <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          <span>Manajemen Anggota</span>
+        </button>
+
+        <button type="button" class="nav-item nav-item-admin" data-view="circulation">
+          <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="17 1 21 5 17 9"></polyline>
+            <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+            <polyline points="7 23 3 19 7 15"></polyline>
+            <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+          </svg>
+          <span>Sirkulasi</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p class="storage-badge">
+          <span class="dot-online"></span>
+          <span>LocalStorage Aktif</span>
+        </p>
+        <small id="sidebarRoleText">Mode: Pustakawan</small>
+      </div>
+    </aside>
+
+    <!-- Area Konten Utama -->
+    <div class="main-wrapper">
+      <header class="top-header">
+        <div class="header-left">
+          <button id="mobileMenuBtn" class="btn-hamburger" type="button" aria-label="Buka Menu Navigasi">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <div>
+            <h1 id="pageTitle" class="page-title">Dashboard Pustakawan</h1>
+            <p id="pageSubtitle" class="page-subtitle">Ringkasan operasional perpustakaan akademik</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button id="btnAdminLogout" class="btn btn-outline btn-sm" type="button" title="Keluar dari akun admin">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            <span>Keluar (Logout)</span>
+          </button>
+
+          <button id="btnResetDemo" class="btn btn-outline btn-sm" type="button" title="Kembalikan data contoh awal">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+            </svg>
+            <span>Reset Demo</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <!-- TAMPILAN 1: DASHBOARD -->
+        <section id="view-dashboard" class="view-section active" aria-labelledby="pageTitle">
+          <div class="kpi-grid">
+            <article class="kpi-card">
+              <div class="kpi-icon kpi-icon-primary">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+              </div>
+              <div class="kpi-info">
+                <span class="kpi-label">Total Judul Buku</span>
+                <strong id="kpiTotalTitles" class="kpi-value">0</strong>
+              </div>
+            </article>
+
+            <article class="kpi-card">
+              <div class="kpi-icon kpi-icon-secondary">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                </svg>
+              </div>
+              <div class="kpi-info">
+                <span class="kpi-label">Total Stok Tersedia</span>
+                <strong id="kpiTotalStock" class="kpi-value">0</strong>
+              </div>
+            </article>
+
+            <article class="kpi-card">
+              <div class="kpi-icon kpi-icon-accent">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                </svg>
+              </div>
+              <div class="kpi-info">
+                <span class="kpi-label">Total Anggota Terdaftar</span>
+                <strong id="kpiTotalMembers" class="kpi-value">0</strong>
+              </div>
+            </article>
+
+            <article class="kpi-card">
+              <div class="kpi-icon kpi-icon-warning">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+              <div class="kpi-info">
+                <span class="kpi-label">Buku Sedang Dipinjam</span>
+                <strong id="kpiActiveLoans" class="kpi-value">0</strong>
+              </div>
+            </article>
+          </div>
+
+          <!-- GRAFIK STATISTIK DASHBOARD (CHART.JS) -->
+          <div class="charts-grid">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Distribusi Koleksi Buku</h2>
+                  <p class="card-subtitle">Proporsi buku berdasarkan kategori keilmuan</p>
+                </div>
+              </div>
+              <div class="chart-wrapper">
+                <div id="categoryChartFallback" class="offline-chart-fallback" hidden></div>
+                <canvas id="categoryChart"></canvas>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Status Sirkulasi Peminjaman</h2>
+                  <p class="card-subtitle">Perbandingan status buku dipinjam, tepat waktu, dan terlambat</p>
+                </div>
+              </div>
+              <div class="chart-wrapper">
+                <div id="circulationChartFallback" class="offline-chart-fallback" hidden></div>
+                <canvas id="circulationChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Aktivitas Peminjaman Terbaru</h2>
+                <p class="card-subtitle">5 transaksi sirkulasi terakhir di perpustakaan</p>
+              </div>
+              <button type="button" class="btn btn-secondary btn-sm" data-goto="circulation">
+                Lihat Semua Sirkulasi
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>ID Transaksi</th>
+                    <th>Nama Peminjam</th>
+                    <th>Judul Buku</th>
+                    <th>Tanggal Pinjam</th>
+                    <th>Jatuh Tempo</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="recentLoansBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAMPILAN 2: KATALOG BUKU -->
+        <section id="view-books" class="view-section" aria-label="Katalog Buku">
+          <div class="toolbar">
+            <div class="filter-group">
+              <div class="search-box">
+                <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="search" id="bookSearchInput" class="form-control" placeholder="Cari judul, penulis, atau ISBN...">
+              </div>
+
+              <select id="bookCategoryFilter" class="form-control" aria-label="Filter Kategori Buku">
+                <option value="ALL">Semua Kategori</option>
+                <option value="Teknologi">Teknologi</option>
+                <option value="Sains">Sains</option>
+                <option value="Sastra">Sastra</option>
+                <option value="Ekonomi">Ekonomi</option>
+                <option value="Sejarah">Sejarah</option>
+              </select>
+
+              <select id="bookAvailabilityFilter" class="form-control" aria-label="Filter Ketersediaan">
+                <option value="ALL">Semua Status</option>
+                <option value="AVAILABLE">Tersedia (Stok &gt; 0)</option>
+                <option value="EMPTY">Habis (Stok = 0)</option>
+              </select>
+            </div>
+
+            <div class="toolbar-actions">
+              <button id="btnExportBooksCsv" type="button" class="btn btn-outline" title="Ekspor data buku ke CSV">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Ekspor CSV</span>
+              </button>
+              <button id="btnOpenAddBook" type="button" class="btn btn-primary">
+                + Tambah Buku
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Daftar Koleksi Buku</h2>
+                <p class="card-subtitle">Manajemen seluruh koleksi pustaka fisik dan digital perpustakaan</p>
+              </div>
+              <span id="booksCountInfo" class="count-badge">0 buku</span>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Kode / ISBN</th>
+                    <th>Judul &amp; Penulis</th>
+                    <th>Kategori</th>
+                    <th>Tahun</th>
+                    <th>Stok</th>
+                    <th>Status</th>
+                    <th class="text-right">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="booksTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAMPILAN 3: MANAJEMEN ANGGOTA -->
+        <section id="view-members" class="view-section" aria-label="Manajemen Anggota">
+          <div class="toolbar">
+            <div class="filter-group">
+              <div class="search-box search-box-wide">
+                <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="search" id="memberSearchInput" class="form-control" placeholder="Cari nama anggota atau ID (NIM/NIS)...">
+              </div>
+            </div>
+
+            <div class="toolbar-actions">
+              <button id="btnExportMembersCsv" type="button" class="btn btn-outline" title="Ekspor data anggota ke CSV">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Ekspor CSV</span>
+              </button>
+              <button id="btnOpenAddMember" type="button" class="btn btn-primary">
+                + Tambah Anggota
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Daftar Anggota Perpustakaan</h2>
+                <p class="card-subtitle">Data mahasiswa, dosen, dan staf peminjam aktif perpustakaan</p>
+              </div>
+              <span id="membersCountInfo" class="count-badge">0 anggota</span>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>ID (NIM/NIS)</th>
+                    <th>Nama Lengkap</th>
+                    <th>Fakultas / Kelas</th>
+                    <th>Kontak</th>
+                    <th>Sedang Dipinjam</th>
+                    <th class="text-right">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="membersTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAMPILAN 4: SIRKULASI -->
+        <section id="view-circulation" class="view-section" aria-label="Sirkulasi Peminjaman dan Pengembalian">
+          <div class="card card-mb">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Catat Peminjaman Baru</h2>
+                <p class="card-subtitle">Stok buku berkurang otomatis &bull; Maks. 3 buku aktif per anggota &bull; Denda Rp 2.000/hari</p>
+              </div>
+              <span class="count-badge">Layanan Sirkulasi</span>
+            </div>
+            <form id="loanForm" class="loan-form" novalidate>
+              <div class="form-grid-4">
+                <div class="form-group">
+                  <label for="loanMemberSelect">Anggota Peminjam <span class="required">*</span></label>
+                  <select id="loanMemberSelect" class="form-control" required>
+                    <option value="">-- Pilih Anggota --</option>
+                  </select>
+                  <span id="error-loanMemberSelect" class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                  <label for="loanBookSelect">Pilih Buku (Tersedia) <span class="required">*</span></label>
+                  <select id="loanBookSelect" class="form-control" required>
+                    <option value="">-- Pilih Buku --</option>
+                  </select>
+                  <span id="error-loanBookSelect" class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                  <label for="loanDateInput">Tanggal Pinjam <span class="required">*</span></label>
+                  <input type="date" id="loanDateInput" class="form-control" required>
+                  <span id="error-loanDateInput" class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                  <label for="loanDueDateInput">Tanggal Jatuh Tempo <span class="required">*</span></label>
+                  <input type="date" id="loanDueDateInput" class="form-control" required>
+                  <span id="error-loanDueDateInput" class="error-message"></span>
+                </div>
+              </div>
+
+              <div class="form-actions-end">
+                <button type="submit" class="btn btn-primary">
+                  Proses Peminjaman
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Toolbar Pencarian, Filter & Ekspor Riwayat Sirkulasi -->
+          <div class="toolbar">
+            <div class="filter-group">
+              <div class="search-box">
+                <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="search" id="loanSearchInput" class="form-control" placeholder="Cari transaksi, peminjam, atau buku...">
+              </div>
+              <select id="loanStatusFilter" class="form-control" aria-label="Filter Status Peminjaman">
+                <option value="ALL">Semua Status</option>
+                <option value="Dipinjam">Sedang Dipinjam</option>
+                <option value="Dikembalikan">Sudah Dikembalikan</option>
+              </select>
+            </div>
+
+            <div class="toolbar-actions">
+              <button id="btnExportLoansCsv" type="button" class="btn btn-outline" title="Ekspor riwayat transaksi ke CSV">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Ekspor CSV</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Riwayat Transaksi Sirkulasi</h2>
+                <p class="card-subtitle">Perpanjangan hanya dapat dilakukan 1x sebelum tanggal jatuh tempo</p>
+              </div>
+              <span id="loansCountInfo" class="count-badge">0 transaksi</span>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>ID Transaksi</th>
+                    <th>Nama Peminjam</th>
+                    <th>Judul Buku</th>
+                    <th>Tgl Pinjam</th>
+                    <th>Jatuh Tempo</th>
+                    <th>Status</th>
+                    <th>Denda</th>
+                    <th class="text-right">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="loansTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- MODAL TAMBAH / EDIT BUKU (+ OPEN LIBRARY API) -->
+  <div id="bookModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="bookModalTitle" hidden>
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <h3 id="bookModalTitle" class="modal-title">Tambah Buku Baru</h3>
+        <button id="btnCloseBookModal" type="button" class="modal-close" aria-label="Tutup">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Integrasi Open Library Public API -->
+        <div class="api-box">
+          <div class="api-box-header">
+            <span class="api-badge">Public API</span>
+            <h4>Cari Buku Otomatis via Open Library</h4>
+          </div>
+          <p class="api-hint">Ketik judul buku atau nomor ISBN untuk mengisi detail form secara otomatis.</p>
+          <div class="api-search-row">
+            <input type="text" id="apiSearchInput" class="form-control" placeholder="Contoh: Clean Code atau 9780132350884...">
+            <button id="btnApiSearch" type="button" class="btn btn-secondary">
+              Cari API
+            </button>
+          </div>
+          <div id="apiStatusMessage" class="api-status" aria-live="polite"></div>
+          <ul id="apiResultsList" class="api-results-list" hidden></ul>
+        </div>
+
+        <form id="bookForm" novalidate>
+          <input type="hidden" id="bookEditId">
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="bookIsbn">Kode / ISBN <span class="required">*</span></label>
+              <input type="text" id="bookIsbn" class="form-control" placeholder="Contoh: 9786020332956" required>
+              <span id="error-bookIsbn" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="bookCategory">Kategori <span class="required">*</span></label>
+              <select id="bookCategory" class="form-control" required>
+                <option value="">-- Pilih Kategori --</option>
+                <option value="Teknologi">Teknologi</option>
+                <option value="Sains">Sains</option>
+                <option value="Sastra">Sastra</option>
+                <option value="Ekonomi">Ekonomi</option>
+                <option value="Sejarah">Sejarah</option>
+              </select>
+              <span id="error-bookCategory" class="error-message"></span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="bookTitle">Judul Buku <span class="required">*</span></label>
+            <input type="text" id="bookTitle" class="form-control" placeholder="Masukkan judul lengkap buku" required>
+            <span id="error-bookTitle" class="error-message"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="bookAuthor">Penulis <span class="required">*</span></label>
+            <input type="text" id="bookAuthor" class="form-control" placeholder="Nama penulis atau pengarang" required>
+            <span id="error-bookAuthor" class="error-message"></span>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="bookYear">Tahun Terbit <span class="required">*</span></label>
+              <input type="number" id="bookYear" class="form-control" placeholder="Contoh: 2024" min="1000" max="2100" required>
+              <span id="error-bookYear" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="bookStock">Jumlah Stok <span class="required">*</span></label>
+              <input type="number" id="bookStock" class="form-control" placeholder="Contoh: 5" min="0" required>
+              <span id="error-bookStock" class="error-message"></span>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button id="btnCancelBookModal" type="button" class="btn btn-outline">Batal</button>
+            <button type="submit" class="btn btn-primary">Simpan Buku</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL TAMBAH / EDIT ANGGOTA -->
+  <div id="memberModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="memberModalTitle" hidden>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="memberModalTitle" class="modal-title">Tambah Anggota Baru</h3>
+        <button id="btnCloseMemberModal" type="button" class="modal-close" aria-label="Tutup">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <form id="memberForm" novalidate>
+          <input type="hidden" id="memberEditId">
+
+          <div class="form-group">
+            <label for="memberId">ID Anggota (NIM / NIS) <span class="required">*</span></label>
+            <input type="text" id="memberId" class="form-control" placeholder="Contoh: MHS-2026005" required>
+            <span id="error-memberId" class="error-message"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="memberName">Nama Lengkap <span class="required">*</span></label>
+            <input type="text" id="memberName" class="form-control" placeholder="Masukkan nama lengkap" required>
+            <span id="error-memberName" class="error-message"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="memberDepartment">Fakultas / Jurusan / Kelas <span class="required">*</span></label>
+            <input type="text" id="memberDepartment" class="form-control" placeholder="Contoh: Teknik Informatika" required>
+            <span id="error-memberDepartment" class="error-message"></span>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="memberPhone">Nomor Telepon <span class="required">*</span></label>
+              <input type="tel" id="memberPhone" class="form-control" placeholder="081234567890" required>
+              <span id="error-memberPhone" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="memberEmail">Email <span class="required">*</span></label>
+              <input type="email" id="memberEmail" class="form-control" placeholder="nama@kampus.ac.id" required>
+              <span id="error-memberEmail" class="error-message"></span>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button id="btnCancelMemberModal" type="button" class="btn btn-outline">Batal</button>
+            <button type="submit" class="btn btn-primary">Simpan Anggota</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL KONFIRMASI -->
+  <div id="confirmModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="confirmModalTitle" hidden>
+    <div class="modal-dialog modal-sm">
+      <div class="modal-header">
+        <h3 id="confirmModalTitle" class="modal-title">Konfirmasi Aksi</h3>
+        <button id="btnCloseConfirmModal" type="button" class="modal-close" aria-label="Tutup">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="confirmModalMessage" class="confirm-text">Apakah Anda yakin ingin melanjutkan?</p>
+      </div>
+      <div class="modal-footer">
+        <button id="btnCancelConfirmModal" type="button" class="btn btn-outline">Batal</button>
+        <button id="btnConfirmAction" type="button" class="btn btn-danger">Ya, Lanjutkan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DETAIL & RIWAYAT ANGGOTA -->
+  <div id="memberDetailModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="memberDetailModalTitle" hidden>
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <h3 id="memberDetailModalTitle" class="modal-title">Profil & Riwayat Peminjaman Anggota</h3>
+        <button id="btnCloseMemberDetailModal" type="button" class="modal-close" aria-label="Tutup">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="memberDetailBody"></div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnCancelMemberDetailModal" type="button" class="btn btn-outline">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Library Pihak Ketiga: Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Modul Arsitektur Sistem (Terstruktur & Mandiri) -->
+  <script src="./js/storage.js" defer></script>
+  <script src="./js/api.js" defer></script>
+  <script src="./js/utils.js" defer></script>
+  <script src="./js/ui.js" defer></script>
+  <script src="./js/auth.js" defer></script>
+  <script src="./js/dashboard.js" defer></script>
+  <script src="./js/books.js" defer></script>
+  <script src="./js/members.js" defer></script>
+  <script src="./js/circulation.js" defer></script>
+  <script src="./js/app.js" defer></script>
+</body>
+</html>
