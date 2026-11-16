@@ -111,31 +111,31 @@ Hak Cipta 2026 PustakaAkademika Team.
 ## Preview Website
 
 ### 1. Portal Autentikasi (`login.html`)
-![Tampilan Halaman Login](sign-in.png)
+![Tampilan Halaman Login](/readme-img/sign-in.png)
 
 ### 2. Portal Autentikasi Admin (`login.html`)
-![Tampilan Halaman Login Admin](sign-in-admin.png)
+![Tampilan Halaman Login Admin](/readme-img/sign-in-admin.png)
 
 ### 3. Portal Pendaftaran Pengguna Baru (`login.html`)
-![Tampilan Halaman Sign-up](sign-up.png)
+![Tampilan Halaman Sign-up](/readme-img/sign-up.png)
 
 ### 4. Laman Katalog Buku (`index.html`)
-![Tampilan Halaman Katalog Pencari Buku](eksplorasi-katalog.png)
+![Tampilan Halaman Katalog Pencari Buku](/readme-img/eksplorasi-katalog.png)
 
 ### 5. Laman Profil dan Peminjaman Buku (`index.html`)
-![Tampilan Halaman Profil](profil-buku-dipinjam.png)
+![Tampilan Halaman Profil](/readme-img/profil-buku-dipinjam.png)
 
 ### 6. Laman Tata-tertib (`index.html`)
-![Tampilan Halaman Tata-tertib](tata-tertib.png)
+![Tampilan Halaman Tata-tertib](/readme-img/tata-tertib.png)
 
 ### 7. Laman Dashboard Admin (`admin.html`)
-![Tampilan Halaman Dashboard Admin](dashboard.png)
+![Tampilan Halaman Dashboard Admin](/readme-img/dashboard.png)
 
 ### 8. Laman Koleksi Buku (`admin.html`)
-![Tampilan Halaman Koleksi Buku Perpustakaan](katalog-buku.png)
+![Tampilan Halaman Koleksi Buku Perpustakaan](/readme-img/katalog-buku.png)
 
 ### 9. Laman Manajemen Anggota (`admin.html`)
-![Tampilan Halaman Manajemen Anggota](manajemen.png)
+![Tampilan Halaman Manajemen Anggota](/readme-img/manajemen.png)
 
 ### 10. Laman Sirkulasi Perpustakaan (`admin.html`)
-![Tampilan Halaman Sirkulasi](sirkulasi.png)
+![Tampilan Halaman Sirkulasi](/readme-img/sirkulasi.png)
